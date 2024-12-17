@@ -22,7 +22,7 @@ COPY backend/ .
 # Set environment variables
 ENV FLASK_ENV=production
 ENV PYTHONUNBUFFERED=1
-ENV GUNICORN_CMD_ARGS="--workers=1 --threads=2 --timeout=120 --log-level=debug --error-logfile=- --access-logfile=- --capture-output"
+ENV GUNICORN_CMD_ARGS="--workers=1 --threads=2 --timeout=120 --log-level=debug --error-logfile=- --access-logfile=- --capture-output --reload"
 
 # Expose port
 EXPOSE 8000
@@ -37,7 +37,13 @@ python --version\n\
 echo "Installed packages:"\n\
 pip list\n\
 echo "Environment variables:"\n\
-env\n\
+env | grep -v "SECRET"\n\
+echo "Waiting for database..."\n\
+python wait-for-db.py\n\
+if [ $? -ne 0 ]; then\n\
+    echo "Failed to connect to database"\n\
+    exit 1\n\
+fi\n\
 echo "Starting Gunicorn..."\n\
 exec gunicorn --bind 0.0.0.0:8000 "app:create_app()" --log-level debug\n\
 ' > ./start.sh && chmod +x ./start.sh

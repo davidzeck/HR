@@ -5,10 +5,10 @@ watchPatterns = ["backend/**/*"]
 [deploy]
 startCommand = "sh ./start.sh"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 600
+healthcheckTimeout = 900
 restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 10
-healthcheckInterval = 15
+restartPolicyMaxRetries = 5
+healthcheckInterval = 30
 
 [env]
 FLASK_ENV = "production"
@@ -16,3 +16,4 @@ PORT = "8000"
 PYTHONUNBUFFERED = "1"
 GUNICORN_TIMEOUT = "120"
 LOG_LEVEL = "DEBUG"
+WAIT_FOR_DB_TIMEOUT = "60"
