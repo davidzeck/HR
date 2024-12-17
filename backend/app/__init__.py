@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from config import config
 import os
+import sys
 
 db = SQLAlchemy()
 jwt = JWTManager()
@@ -32,10 +33,24 @@ def create_app():
     else:
         CORS(app)
 
-    # Add health check endpoint
+    # Add health check endpoint with diagnostics
     @app.route('/api/health')
     def health_check():
-        return jsonify({"status": "healthy"}), 200
+        try:
+            # Test database connection
+            db.session.execute('SELECT 1')
+            db_status = "connected"
+        except Exception as e:
+            db_status = f"error: {str(e)}"
+
+        health_data = {
+            "status": "healthy",
+            "environment": env,
+            "python_version": sys.version,
+            "database_status": db_status,
+            "debug_mode": app.debug
+        }
+        return jsonify(health_data), 200
 
     # Register blueprints
     from app.routes.auth import auth_bp
