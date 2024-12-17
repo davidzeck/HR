@@ -1,0 +1,11 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
+
+[deploy]
+startCommand = "gunicorn 'app:create_app()' --log-file -"
+healthcheckPath = "/api/health"
+restartPolicyType = "on_failure"
+
+[env]
+FLASK_ENV = "production" 

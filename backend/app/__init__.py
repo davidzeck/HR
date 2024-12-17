@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -31,6 +31,11 @@ def create_app():
         })
     else:
         CORS(app)
+
+    # Add health check endpoint
+    @app.route('/api/health')
+    def health_check():
+        return jsonify({"status": "healthy"}), 200
 
     # Register blueprints
     from app.routes.auth import auth_bp
