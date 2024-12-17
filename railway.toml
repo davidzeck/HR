@@ -1,4 +1,5 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
 dockerfilePath = "backend/Dockerfile"
+dockerContext = "backend"
 watchPatterns = ["backend/**/*"] 

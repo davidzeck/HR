@@ -1,9 +1,4 @@
-[build]
-builder = "dockerfile"
-buildCommand = "docker build -t app ."
-
 [deploy]
-startCommand = "docker run -p 8000:8000 app"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"
