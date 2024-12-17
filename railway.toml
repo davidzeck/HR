@@ -3,12 +3,12 @@ builder = "dockerfile"
 watchPatterns = ["backend/**/*"]
 
 [deploy]
-startCommand = "sh ./start.sh"
+startCommand = "./start.sh"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 900
+healthcheckTimeout = 300
 restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 5
-healthcheckInterval = 30
+restartPolicyMaxRetries = 3
+healthcheckInterval = 15
 
 [env]
 FLASK_ENV = "production"
@@ -16,4 +16,5 @@ PORT = "8000"
 PYTHONUNBUFFERED = "1"
 GUNICORN_TIMEOUT = "120"
 LOG_LEVEL = "DEBUG"
-WAIT_FOR_DB_TIMEOUT = "60"
+WAIT_FOR_DB_RETRIES = "60"
+WAIT_FOR_DB_INTERVAL = "5"

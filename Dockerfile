@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y \
     gcc \
     default-libmysqlclient-dev \
     pkg-config \
-    netcat-traditional \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy backend requirements first to leverage Docker cache
@@ -22,30 +21,21 @@ COPY backend/ .
 # Set environment variables
 ENV FLASK_ENV=production
 ENV PYTHONUNBUFFERED=1
-ENV GUNICORN_CMD_ARGS="--workers=1 --threads=2 --timeout=120 --log-level=debug --error-logfile=- --access-logfile=- --capture-output --reload"
+ENV GUNICORN_CMD_ARGS="--workers=1 --threads=1 --timeout=120 --log-level=debug --error-logfile=- --access-logfile=- --capture-output"
 
 # Expose port
 EXPOSE 8000
 
-# Create start script with health check and debugging
+# Create start script
 RUN echo '#!/bin/bash\n\
-echo "Current directory: $(pwd)"\n\
-echo "Listing directory contents:"\n\
-ls -la\n\
-echo "Python version:"\n\
-python --version\n\
-echo "Installed packages:"\n\
-pip list\n\
-echo "Environment variables:"\n\
-env | grep -v "SECRET"\n\
-echo "Waiting for database..."\n\
+set -e\n\
+\n\
+echo "Python version: $(python --version)"\n\
+echo "Checking database connection..."\n\
 python wait-for-db.py\n\
-if [ $? -ne 0 ]; then\n\
-    echo "Failed to connect to database"\n\
-    exit 1\n\
-fi\n\
+\n\
 echo "Starting Gunicorn..."\n\
-exec gunicorn --bind 0.0.0.0:8000 "app:create_app()" --log-level debug\n\
+exec gunicorn --bind 0.0.0.0:8000 "app:create_app()"\n\
 ' > ./start.sh && chmod +x ./start.sh
 
 # Start the application
