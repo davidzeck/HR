@@ -7,10 +7,12 @@ startCommand = "sh ./start.sh"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 600
 restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 5
+restartPolicyMaxRetries = 10
+healthcheckInterval = 15
 
 [env]
 FLASK_ENV = "production"
 PORT = "8000"
 PYTHONUNBUFFERED = "1"
 GUNICORN_TIMEOUT = "120"
+LOG_LEVEL = "DEBUG"
