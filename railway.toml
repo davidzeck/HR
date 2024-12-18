@@ -16,3 +16,12 @@ PORT = "8000"
 PYTHONUNBUFFERED = "1"
 SECRET_KEY = "0403e15c727b13683035e89b46b2b30afc6184e63b82c1b94ada6dc66b7f4120"
 JWT_SECRET_KEY = "467cfbba631f03f2ea40ef4ed6935212516830f3b14e9a0d724755ebd37a83d5"
+CORS_ALLOWED_ORIGINS = "https://hrfrontend-c9iym5e7r-ezekiels-projects-b771e6da.vercel.app"
+MYSQL_ATTR_SSL_CA = "true"
+
+# Database variables will be automatically injected by Railway:
+# MYSQL_DATABASE = "railway"
+# MYSQLHOST = "${{RAILWAY_PRIVATE_DOMAIN}}"
+# MYSQLPASSWORD = "${{MYSQL_ROOT_PASSWORD}}"
+# MYSQLPORT = "3306"
+# MYSQLUSER = "root"
